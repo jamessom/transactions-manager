@@ -19,6 +19,12 @@ class CreateTransactionService {
       throw new Error('Type is not supported');
     }
 
+    const { total } = this.transactionsRepository.getBalance();
+
+    if (type === 'outcome' && total < value) {
+      throw new Error('Insufficient balance');
+    }
+
     const transaction = this.transactionsRepository.create({
       title,
       value,
